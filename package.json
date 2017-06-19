@@ -1,0 +1,17 @@
+{
+  "name": "netlify-cms-www-webhook",
+  "version": "1.0.0",
+  "description": "Extend your github repositories with this github webhook listener",
+  "main": "handler.js",
+  "repository": "https://github.com/netlify/netlify-cms-webhook",
+  "scripts": {
+    "deploy": "serverless deploy",
+    "logs": "serverless logs -f githubWebhookListener -t"
+  },
+  "author": "David Wells",
+  "license": "MIT",
+  "dependencies": {
+    "crypto": "0.0.3",
+    "unfetch": "2.1.2"
+  }
+}
