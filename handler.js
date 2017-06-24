@@ -1,5 +1,5 @@
 const crypto = require('crypto');
-const fetch = require('unfetch');
+const unfetch = require('unfetch');
 
 function signRequestBody(key, body) {
   return `sha1=${crypto.createHmac('sha1', key).update(body, 'utf-8').digest('hex')}`;
@@ -36,6 +36,11 @@ module.exports.githubWebhookListener = (event, context, callback) => {
   }
 
   if (sig !== calculatedSig) {
+    console.log('---------------------------------');
+    console.log("sig from header: ", sig)
+    console.log('---------------------------------');
+    console.log("calculatedSig: ", calculatedSig)
+    console.log('---------------------------------');
     errMsg = '[401] X-Hub-Signature incorrect. Github webhook token doesn\'t match';
     return callback(new Error(errMsg));
   }
@@ -47,9 +52,9 @@ module.exports.githubWebhookListener = (event, context, callback) => {
   console.log('Payload', event.body);
   /* eslint-enable */
 
-  // Do custom stuff here with github event data
+  // This fires the Netlify webhook to deploy, it the above succeeds without error
   // For more on events see https://developer.github.com/v3/activity/events/types/
-  fetch(netlifyWebhook, {method: 'POST'}, body: JSON.stringify({}));
+  unfetch(netlifyWebhook, {method: 'POST'});
 
   const response = {
     statusCode: 200,
