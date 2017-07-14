@@ -8,7 +8,10 @@ provider:
     NETLIFY_WEBHOOK_BUILD: REPLACE-WITH-YOUR-SECRET-HERE
 
 functions:
-  hello:
-    handler: handler.hello
-
-
+  webhook:
+    handler: handler.githubWebhookListener
+    description: function to trigger a build for the netlifycms.org
+    events:
+      - http:
+          path: webhook
+          method: post
