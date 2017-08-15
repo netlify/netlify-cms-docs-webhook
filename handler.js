@@ -35,23 +35,10 @@ module.exports.githubWebhookListener = (event, context, callback) => {
     return callback(new Error(errMsg));
   }
 
-  // TODO: Figure out why this check always fails
-  // if (sig !== calculatedSig) {
-  //   console.log('---------------------------------');
-  //   console.log("sig from header: ", sig)
-  //   console.log('---------------------------------');
-  //   console.log("calculatedSig: ", calculatedSig)
-  //   console.log('---------------------------------');
-  //   errMsg = '[401] X-Hub-Signature incorrect. Github webhook token doesn\'t match';
-  //   return callback(new Error(errMsg));
-  // }
-
-  /* eslint-disable */
-  console.log('---------------------------------');
-  console.log(`Github-Event: "${githubEvent}" with action: "${event.body.action}"`);
-  console.log('---------------------------------');
-  console.log('Payload', event.body);
-  /* eslint-enable */
+  if (sig !== calculatedSig) {
+    errMsg = '[401] X-Hub-Signature incorrect. Github webhook token doesn\'t match';
+    return callback(new Error(errMsg));
+  }
 
   // This fires the Netlify webhook to deploy, it the above succeeds without error
   // For more on events see https://developer.github.com/v3/activity/events/types/
